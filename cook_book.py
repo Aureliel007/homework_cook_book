@@ -10,6 +10,19 @@ def cook_book_read(file):
         file.readline()
     return cook_book
 
+def get_shop_list_by_dishes(dishes, person_count):
+    ingr_list = {}
+    for dish in dishes:
+        for ingr in cook_book[dish]:
+            ingr_name = ingr['ingredient_name']
+            if ingr_name in ingr_list:
+                ingr_list[ingr_name]['quantity'] += ingr['quantity'] * person_count
+            else:
+                ingr_list[ingr_name] = {'measure': ingr['measure'], 'quantity': ingr['quantity'] * person_count}
+    return ingr_list
+
 with open('recipes.txt', 'r', encoding='utf-8') as file:
     cook_book = cook_book_read(file)
-print(cook_book)
+    all_ingredients = get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+
+print(all_ingredients)
